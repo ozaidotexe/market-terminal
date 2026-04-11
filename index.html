@@ -14,10 +14,9 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Membuka WebApp secara penuh
+        tg.expand();
 
         function doHunt() {
-            // Mengirim pesan kembali ke bot untuk diproses secara backend
             tg.sendData("proses_hunt_sekarang");
             tg.close();
         }
