@@ -3,21 +3,51 @@
 <head>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background: #1a1a1a; color: white; text-align: center; padding: 20px; }
-        .btn-hunt { background: #248bcf; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; width: 100%; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #1a1a1a; 
+            color: white; 
+            text-align: center; 
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 80vh;
+        }
+        .btn-hunt { 
+            background: linear-gradient(135deg, #248bcf, #0056b3); 
+            color: white; 
+            border: none; 
+            padding: 20px; 
+            border-radius: 15px; 
+            font-size: 1.2rem;
+            font-weight: bold; 
+            width: 100%; 
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        .btn-hunt:active {
+            transform: scale(0.95);
+        }
+        h2 { color: #248bcf; }
+        p { color: #aaa; margin-bottom: 30px; }
     </style>
 </head>
 <body>
-    <h2>🎯 Bug Box Hunting</h2>
-    <p>Klik tombol di bawah untuk mulai berburu!</p>
-    <button class="btn-hunt" onclick="doHunt()">GAS HUNTING!</button>
+    <h2>🎯 Bug Box Terminal</h2>
+    <p>Pastikan koneksi stabil sebelum menekan tombol.</p>
+    
+    <button class="btn-hunt" onclick="doHunt()">GAS HUNTING SEKARANG!</button>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
+        
+        tg.expand(); 
 
         function doHunt() {
-            tg.sendData("proses_hunt_sekarang");
+            tg.sendData("proses_hunt");
+            
             tg.close();
         }
     </script>
