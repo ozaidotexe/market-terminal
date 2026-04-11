@@ -13,6 +13,7 @@
             flex-direction: column;
             justify-content: center;
             height: 80vh;
+            overflow: hidden; /* Mencegah scroll yang tidak perlu */
         }
         .btn-hunt { 
             background: linear-gradient(135deg, #248bcf, #0056b3); 
@@ -24,14 +25,16 @@
             font-weight: bold; 
             width: 100%; 
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.1s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.1s, brightness 0.2s;
+            -webkit-tap-highlight-color: transparent; /* Hilangkan warna biru saat tap di HP */
         }
         .btn-hunt:active {
             transform: scale(0.95);
+            filter: brightness(1.2);
         }
-        h2 { color: #248bcf; }
-        p { color: #aaa; margin-bottom: 30px; }
+        h2 { color: #248bcf; margin-top: 0; }
+        p { color: #aaa; margin-bottom: 30px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -43,12 +46,22 @@
     <script>
         const tg = window.Telegram.WebApp;
         
+        // Memastikan WebApp terbuka penuh di layar HP
         tg.expand(); 
 
         function doHunt() {
+            // 1. Efek Getar (Haptic Feedback) agar terasa premium
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('heavy');
+            }
+
+            // 2. Kirim sinyal ke Bot Python
             tg.sendData("proses_hunt");
             
-            tg.close();
+            // 3. Jeda 150ms baru tutup (supaya animasi klik terlihat dulu)
+            setTimeout(() => {
+                tg.close();
+            }, 150);
         }
     </script>
 </body>
