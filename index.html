@@ -1,132 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BUG BOX TERMINAL v37</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* TEMA METALIK & LED NEON (MENYESUAIKAN NFT) */
-        body { 
-            background: #1a1a1a; /* Abu-abu Baja Gelap */
-            color: #e0e0e0; /* Putih tulang untuk teks umum */
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, monospace; /* Font lebih modern & premium */
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            justify-content: center; 
-            align-items: center; 
-            text-align: center; 
-        }
-
-        h3 { 
-            color: #cd7f32; /* Warna Tembaga/Perunggu */
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            margin-bottom: 10px; 
-            font-weight: 600;
-        }
-
-        /* PANEL TERMINAL - EFEK LAMPU LED CYAN */
-        #term { 
-            width: 80%; 
-            height: 45%; 
-            border: 3px solid #2a2a2a; /* Border metal gelap */
-            padding: 20px; 
-            overflow: hidden; 
-            background: rgba(0,0,0,0.5); /* Hitam transparan */
-            font-size: 14px; 
-            text-align: left; 
-            margin-bottom: 25px; 
-            border-radius: 8px;
-            /* Efek Glow Cyan seperti di bingkai NFT */
-            box-shadow: 0 0 15px rgba(15, 255, 199, 0.4); 
-            line-height: 1.6;
-        }
-
-        /* WARNA TEKS LOG */
-        #term div {
-            border-bottom: 1px solid #2a2a2a;
-            padding-bottom: 4px;
-            margin-bottom: 4px;
-        }
-        
-        #term .prefix {
-            color: #cd7f32; /* Tembaga */
-            font-weight: bold;
-            margin-right: 5px;
-        }
-
-        /* TOMBOL MINIMALIS TEMBAGA */
-        .btn { 
-            padding: 18px 35px; 
-            background: #cd7f32; /* Tembaga penuh */
-            color: #1a1a1a; /* Teks gelap */
-            border: none; 
-            font-weight: bold; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            width: 80%; 
-            font-size: 15px; 
-            letter-spacing: 1px;
-            transition: background 0.3s ease;
-        }
-
-        .btn:active {
-            background: #a06328; /* Tembaga Gelap saat ditekan */
-        }
-
-        .btn:disabled { 
-            background: #4a4a4a; /* Abu-abu mati */
-            color: #888; 
-            box-shadow: none;
-        }
-
+        body { font-family: sans-serif; background: #1a1a1a; color: white; text-align: center; padding: 20px; }
+        .btn-hunt { background: #248bcf; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; width: 100%; }
     </style>
 </head>
 <body>
-    <h3>SYS.BUG_HUNT_V37</h3>
-    <div id="term"></div>
-    <button id="btnHunt" class="btn" onclick="startScan()">MULAI PEMINDAIAN SATELIT</button>
+    <h2>🎯 Bug Box Hunting</h2>
+    <p>Klik tombol di bawah untuk mulai berburu!</p>
+    <button class="btn-hunt" onclick="doHunt()">GAS HUNTING!</button>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
+        tg.expand(); // Membuka WebApp secara penuh
 
-        const term = document.getElementById('term');
-        const btn = document.getElementById('btnHunt');
-
-        function addLine(txt, delay) {
-            return new Promise(res => {
-                setTimeout(() => {
-                    const l = document.createElement('div');
-                    l.innerHTML = `<span class="prefix">[LOG]</span> ${txt}`;
-                    term.appendChild(l);
-                    term.scrollTop = term.scrollHeight;
-                    res();
-                }, delay);
-            });
-        }
-
-        async function startScan() {
-            btn.disabled = true;
-            term.innerHTML = "";
-            
-            // LOG LOGISTIK YANG LEBIH COCOK DENGAN TEMA "BUG BOX"
-            await addLine("MENYALAKAN MODUL NAVIGASI...", 600);
-            await addLine("MENGHUBUNGKAN KE JARINGAN DEEP-SPACE...", 900);
-            await addLine("MEMINDAI SEKTOR PASAR GLOBAL...", 1200);
-            await addLine("KUALIFIKASI ASET DIGITAL DITEMUKAN!", 600);
-            await addLine("MENGUNDUH PROTOKOL ENKRIPSI...", 800);
-            await addLine("SELESAI. MENGIRIM DATA KE BOT...", 500);
-            
-            setTimeout(() => {
-                tg.sendData(JSON.stringify({action: "execute_hunt"}));
-                tg.close();
-            }, 1000);
+        function doHunt() {
+            // Mengirim pesan kembali ke bot untuk diproses secara backend
+            tg.sendData("proses_hunt_sekarang");
+            tg.close();
         }
     </script>
 </body>
