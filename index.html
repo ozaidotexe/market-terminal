@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HUNTING TERMINAL v37</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; justify-content: center; align-items: center; text-align: center; }
+        #term { width: 85%; height: 50%; border: 1px solid #0f0; padding: 15px; overflow: hidden; background: rgba(0,255,0,0.02); font-size: 13px; text-align: left; margin-bottom: 20px; box-shadow: 0 0 10px #0f0; }
+        .btn { padding: 15px 30px; background: #0f0; color: #000; border: none; font-weight: bold; border-radius: 4px; cursor: pointer; text-transform: uppercase; width: 85%; }
+        .btn:disabled { background: #050; color: #888; }
+        .cursor { display: inline-block; width: 8px; height: 15px; background: #0f0; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+    <h3>SYS.HUNT_V37_ONLINE</h3>
+    <div id="term"></div>
+    <button id="btnHunt" class="btn" onclick="startScan()">MULAI SCAN ASET</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        const term = document.getElementById('term');
+        const btn = document.getElementById('btnHunt');
+
+        function addLine(txt, delay) {
+            return new Promise(res => {
+                setTimeout(() => {
+                    const l = document.createElement('div');
+                    l.innerHTML = `> ${txt}`;
+                    term.appendChild(l);
+                    term.scrollTop = term.scrollHeight;
+                    res();
+                }, delay);
+            });
+        }
+
+        async function startScan() {
+            btn.disabled = true;
+            term.innerHTML = "";
+            await addLine("CONNECTING TO SATELLITE...", 500);
+            await addLine("BYPASSING FIREWALL...", 800);
+            await addLine("SCANNING GLOBAL MARKET...", 1000);
+            await addLine("TARGET IDENTIFIED!", 500);
+            await addLine("DOWNLOADING DATA ENCRYPTION...", 700);
+            await addLine("COMPLETED. SENDING TO BOT...", 500);
+            
+            setTimeout(() => {
+                tg.sendData(JSON.stringify({action: "execute_hunt"}));
+                tg.close();
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
