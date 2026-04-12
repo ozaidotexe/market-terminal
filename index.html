@@ -12,9 +12,33 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            height: 80vh;
-            overflow: hidden; /* Mencegah scroll yang tidak perlu */
+            height: 90vh; /* Sedikit lebih tinggi agar nyaman */
+            overflow: hidden;
         }
+
+        /* Container Animasi Radar */
+        .radar-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            display: none; /* Sembunyi di awal */
+        }
+
+        .radar {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #248bcf;
+            border-radius: 50%;
+            position: absolute;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
         .btn-hunt { 
             background: linear-gradient(135deg, #248bcf, #0056b3); 
             color: white; 
@@ -26,42 +50,94 @@
             width: 100%; 
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: transform 0.1s, brightness 0.2s;
-            -webkit-tap-highlight-color: transparent; /* Hilangkan warna biru saat tap di HP */
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
         }
-        .btn-hunt:active {
-            transform: scale(0.95);
-            filter: brightness(1.2);
+
+        .btn-hunt:disabled {
+            background: #444;
+            transform: scale(1);
+            cursor: not-allowed;
         }
+
+        .status-text {
+            color: #248bcf;
+            font-weight: bold;
+            margin-top: 15px;
+            min-height: 1.2em;
+        }
+
         h2 { color: #248bcf; margin-top: 0; }
         p { color: #aaa; margin-bottom: 30px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <h2>🎯 Bug Box Terminal</h2>
-    <p>Pastikan koneksi stabil sebelum menekan tombol.</p>
-    
-    <button class="btn-hunt" onclick="doHunt()">GAS HUNTING SEKARANG!</button>
+    <div id="main-ui">
+        <h2>🎯 Bug Box Terminal</h2>
+        <p id="desc">Sistem siap. Klik tombol untuk memindai market.</p>
+        
+        <div id="radar" class="radar-container">
+            <div class="radar"></div>
+            <div class="radar" style="animation-delay: 0.5s"></div>
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:2rem;">🛰️</div>
+        </div>
+
+        <button id="hunt-btn" class="btn-hunt" onclick="startHunting()">GAS HUNTING SEKARANG!</button>
+        <div id="status" class="status-text"></div>
+    </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        
-        // Memastikan WebApp terbuka penuh di layar HP
         tg.expand(); 
 
-        function doHunt() {
-            // 1. Efek Getar (Haptic Feedback) agar terasa premium
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('heavy');
-            }
+        function startHunting() {
+            const btn = document.getElementById('hunt-btn');
+            const radar = document.getElementById('radar');
+            const status = document.getElementById('status');
+            const desc = document.getElementById('desc');
 
-            // 2. Kirim sinyal ke Bot Python
-            tg.sendData("proses_hunt");
+            // 1. Haptic Feedback (Vibrate)
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+
+            // 2. Ubah UI ke mode Hunting
+            btn.disabled = true;
+            btn.style.display = 'none';
+            radar.style.display = 'block';
+            desc.innerText = "Sedang memindai koordinat aset...";
             
-            // 3. Jeda 150ms baru tutup (supaya animasi klik terlihat dulu)
+            let progress = 0;
+            const texts = [
+                "Menghubungkan ke satelit...",
+                "Memindai antrean market...",
+                "Mencoba membobol Box...",
+                "Hampir selesai..."
+            ];
+
+            // 3. Simulasi Proses (Misal 4 Detik)
+            const interval = setInterval(() => {
+                status.innerText = texts[progress];
+                progress++;
+                
+                if (progress >= texts.length) {
+                    clearInterval(interval);
+                    finishHunting();
+                }
+            }, 1000);
+        }
+
+        function finishHunting() {
+            const status = document.getElementById('status');
+            status.style.color = "#00ff00";
+            status.innerText = "DATA TERKIRIM KE TELEGRAM!";
+
+            if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+            // 4. Kirim data ke Bot Python di akhir proses
+            // Ini akan menutup WebApp secara otomatis
             setTimeout(() => {
+                tg.sendData("proses_hunt");
                 tg.close();
-            }, 150);
+            }, 800);
         }
     </script>
 </body>
